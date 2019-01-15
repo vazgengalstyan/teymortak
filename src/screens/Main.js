@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StatusBar, Animated} from 'react-native'
-import {Layout, Name} from '../uikit'
+import {Layout, Name, Button, ContainerRow} from '../uikit'
 import Styles from '../styles/Styles'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -31,6 +31,14 @@ class Main extends Component {
                 <Layout>
 
                     <Name fadeAnim={fadeAnim}/>
+
+                    <ContainerRow>
+
+                        <Button animatedValue={new Animated.Value(1)} iconName={'play'} onPress={()=>{alert(1)}}/>
+
+                        <Button animatedValue={new Animated.Value(1)} iconName={'crown'} onPress={()=>{alert(2)}}/>
+
+                    </ContainerRow>
 
                 </Layout>
 
