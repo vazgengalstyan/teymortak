@@ -16,7 +16,14 @@ class Main extends Component {
 
     didFocusSubscription = this.props.navigation.addListener('didFocus', async () => {
 
-        await AsyncStorage.getItem('sound').then((sound) => {
+        await AsyncStorage.getItem('sound').then(async (sound) => {
+
+            if(sound === null){
+                await AsyncStorage.setItem('sound', '1')
+                this.setState({sound_play: '1'})
+                return
+            }
+
             this.setState({sound_play: sound})
         })
 
