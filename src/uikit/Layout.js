@@ -4,14 +4,14 @@ import Styles from '../styles/Styles'
 
 const Layout = props => {
 
-    const {container,fullWidthHeight,contentCenter} = Styles
-    const img = require('../images/Background.jpg')
+    const {container,contentCenter} = Styles
+    const img = require('../res/images/Background.jpg')
 
     return (
 
         <View style={container}>
 
-            <ImageBackground source={img} style={[fullWidthHeight,contentCenter]}>
+            <ImageBackground source={img} style={[container,contentCenter]}>
 
                 {props.children}
 

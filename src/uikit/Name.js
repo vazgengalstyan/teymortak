@@ -4,7 +4,7 @@ import Styles from '../styles/Styles'
 
 const Name = ({fadeAnim}) => {
 
-    const img = require('../images/Logo.png')
+    const img = require('../res/images/Logo.png')
     const {name} = Styles
 
     return (
