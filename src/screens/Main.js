@@ -34,9 +34,16 @@ class Main extends Component {
 
                     <ContainerRow>
 
-                        <Button animatedValue={new Animated.Value(1)} iconName={'play'} onPress={()=>{alert(1)}}/>
+                        <Button animatedValue={new Animated.Value(1)}
+                                iconName={'play'}
+                                onPress={()=>{alert(1)}}
+                                fadeAnim={fadeAnim}
+                        />
 
-                        <Button animatedValue={new Animated.Value(1)} iconName={'crown'} onPress={()=>{alert(2)}}/>
+                        <Button animatedValue={new Animated.Value(1)}
+                                iconName={'crown'}
+                                onPress={()=>{alert(2)}}
+                                fadeAnim={fadeAnim}/>
 
                     </ContainerRow>
 

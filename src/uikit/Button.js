@@ -3,7 +3,7 @@ import { View, TouchableWithoutFeedback, Animated } from 'react-native'
 import Styles from '../styles/Styles'
 import Icon from 'react-native-vector-icons/dist/FontAwesome5'
 
-const Button = ({animatedValue,iconName,onPress})=> {
+const Button = ({animatedValue,iconName,onPress,fadeAnim})=> {
 
     const {buttonMain,contentCenter} = Styles
 
@@ -29,7 +29,7 @@ const Button = ({animatedValue,iconName,onPress})=> {
     }
 
         return (
-            <View>
+            <Animated.View style={{opacity: fadeAnim}}>
 
                 <TouchableWithoutFeedback onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
 
@@ -41,7 +41,7 @@ const Button = ({animatedValue,iconName,onPress})=> {
 
                 </TouchableWithoutFeedback>
 
-            </View>
+            </Animated.View>
         );
 
 }
