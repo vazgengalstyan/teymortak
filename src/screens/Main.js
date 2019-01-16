@@ -1,43 +1,35 @@
 import React, {Component} from 'react';
-import {View, AppState, AsyncStorage, StatusBar, Animated} from 'react-native'
-import {Layout, Name, Button, ContainerRow, ButtonSound} from '../uikit'
+import {View, AppState, AsyncStorage, StatusBar, Animated, YellowBox} from 'react-native'
+import {Layout, Name, Button, ContainerRow, ButtonSound, PopUp} from '../uikit'
 import Styles from '../styles/Styles'
 import SplashScreen from 'react-native-splash-screen'
 import Sound from 'react-native-sound'
+YellowBox.ignoreWarnings(['Require cycle:']);
 
 class Main extends Component {
 
     state = {
 
         fadeAnim: new Animated.Value(0),
-        sound_play: ''
+        sound_play: '',
+        visibleModal: false
 
     }
 
     didFocusSubscription = this.props.navigation.addListener('didFocus', async () => {
 
-        await AsyncStorage.getItem('sound').then(async (sound) => {
+        this.sound = new Sound(require('../res/sound/sound.mp3'), Sound.MAIN_BUNDLE)
 
-            if(sound === null){
-                await AsyncStorage.setItem('sound', '1')
-                this.setState({sound_play: '1'})
-                return
-            }
+        await AsyncStorage.getItem('sound').then((sound)=>{
 
             this.setState({sound_play: sound})
+            this.playStopSound()
+
         })
 
         SplashScreen.hide();
-
         AppState.addEventListener('change', this._handleAppStateChange);
-
         Animated.timing(this.state.fadeAnim, {toValue: 1, duration: 2500}).start();
-
-        setTimeout(() => {
-            if (+this.state.sound_play) {
-                this.playSound()
-            }
-        }, 400)
 
     })
 
@@ -45,45 +37,50 @@ class Main extends Component {
 
         if (AppState.currentState === 'background') {
 
-            this.sound.stop()
+            this.sound.pause()
 
         } else {
 
-            this.playSound()
+            this.playStopSound()
+
         }
 
     }
 
-    playSound = () => {
+    playStopSound = ()=> {
 
-        if (+this.state.sound_play) {
-            this.sound.play(() => {
-                this.playSound()
-            })
-        }
+        if(this.state.sound_play==='1' || this.state.sound_play===null){
 
-    }
+            if(this.state.sound_play===null){
 
-    stopSound = async () => {
+                this.setState({sound_play: '1'})
 
-        if (+this.state.sound_play) {
+            }
+
+            setTimeout(()=>{
+
+                this.sound.play(()=>{this.playStopSound()})
+
+            },500)
+
+        }else {
+
             this.sound.stop()
-            await AsyncStorage.setItem('sound', '0')
-            await this.setState({sound_play: '0'})
-        } else {
-            await AsyncStorage.setItem('sound', '1')
-            await this.setState({sound_play: '1'})
-            this.playSound()
+
         }
 
     }
 
-    sound = new Sound(require('../res/sound/sound.mp3'), null, (error) => {});
+    setModalVisible = (visible)=>{
+
+        this.setState({visibleModal: visible})
+
+    }
 
     render(): React.ReactNode {
 
         const {container} = Styles
-        const {fadeAnim, sound_play} = this.state
+        const {fadeAnim, sound_play,visibleModal} = this.state
 
         return (
             <View style={container}>
@@ -94,12 +91,14 @@ class Main extends Component {
 
                     <ButtonSound animatedValue={new Animated.Value(1)}
                                  soundOn={sound_play}
-                                 onPress={() => {
-                                     this.stopSound()
-                                 }}
+                                 onPress={() => {this.setState({sound_play: this.state.sound_play==='0'?'1':'0'});this.playStopSound()}}
                                  fadeAnim={fadeAnim}/>
 
                     <Name fadeAnim={fadeAnim}/>
+
+                    <PopUp visibleModal={visibleModal}
+                           setModalVisible={this.setModalVisible}
+                    />
 
                     <ContainerRow>
 
@@ -113,7 +112,7 @@ class Main extends Component {
                         <Button animatedValue={new Animated.Value(1)}
                                 iconName={'crown'}
                                 onPress={() => {
-                                    alert(2)
+                                    this.setModalVisible(true)
                                 }}
                                 fadeAnim={fadeAnim}/>
 

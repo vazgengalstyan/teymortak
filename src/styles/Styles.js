@@ -40,6 +40,27 @@ const Styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row'
+    },
+    containerDialog: {
+        backgroundColor: 'rgb(224,183,127)',
+        borderWidth: 5,
+        borderRadius: 8,
+        borderColor: 'rgb(70,23,4)',
+        height: '100%',
+        position: 'relative'
+    },
+    popUpCloseButton: {
+        width: 30,
+        height: 30,
+        position: 'absolute',
+        top: -6,
+        right: -6,
+        zIndex: 10,
+        backgroundColor: 'rgb(224,183,127)',
+        borderWidth: 3,
+        borderRadius: 90,
+        borderColor: 'rgb(70,23,4)',
+        elevation: 8
     }
 })
 
