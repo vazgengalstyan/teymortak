@@ -26,9 +26,9 @@ class Main extends Component {
         loaderVisible: false
     }
 
-    didFocusSubscription = this.props.navigation.addListener('didFocus', async () => {
+    sound = new Sound(require('../res/sound/sound.mp3'), Sound.MAIN_BUNDLE)
 
-        this.sound = new Sound(require('../res/sound/sound.mp3'), Sound.MAIN_BUNDLE)
+    didFocusSubscription = this.props.navigation.addListener('didFocus', async () => {
 
         this.getRecords()
 
@@ -118,6 +118,20 @@ class Main extends Component {
 
     }
 
+    startGame = ()=>{
+
+        this.props.navigation.navigate('Game')
+        this.setState({loaderVisible: false})
+
+    }
+
+    soundButtonClick = ()=>{
+
+        this.setState({sound_play: this.state.sound_play === '0' ? '1' : '0'})
+        this.playStopSound()
+
+    }
+
     render(): React.ReactNode {
 
         const {container} = Styles
@@ -139,10 +153,7 @@ class Main extends Component {
 
                         <ButtonSound animatedValue={new Animated.Value(1)}
                                      soundOn={sound_play}
-                                     onPress={() => {
-                                         this.setState({sound_play: this.state.sound_play === '0' ? '1' : '0'})
-                                         this.playStopSound()
-                                     }}
+                                     onPress={this.soundButtonClick}
                                      fadeAnim={fadeAnim}/>
 
                         <Name fadeAnim={fadeAnim}/>
@@ -161,6 +172,7 @@ class Main extends Component {
                                             this.setState({loaderVisible: true})
                                         }
                                         this.setState({gameStarted: true})
+                                        this.startGame()
                                     }}
                                     fadeAnim={fadeAnim}/>
 

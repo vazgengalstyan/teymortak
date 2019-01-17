@@ -78,6 +78,25 @@ const Styles = StyleSheet.create({
     },
     fontSize24: {
         fontSize: 24
+    },
+    BoardGame: {
+        width: w-40,
+        padding: 20,
+        height: w-40,
+        backgroundColor: 'rgb(224,183,127)',
+        borderWidth: 5,
+        borderColor: 'rgb(70,23,4)'
+    },
+    positionAbsoluteContainer: {
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        zIndex: 5
+    },
+    timeStyle: {
+        color: 'rgb(70,23,4)',
+        fontSize: 50,
+        fontWeight: 'bold'
     }
 })
 
