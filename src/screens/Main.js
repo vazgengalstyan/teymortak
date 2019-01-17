@@ -1,28 +1,40 @@
 import React, {Component} from 'react';
-import {View, AppState, AsyncStorage, StatusBar, Animated, YellowBox} from 'react-native'
+import {
+    View,
+    AppState,
+    AsyncStorage,
+    StatusBar,
+    Animated,
+    YellowBox,
+    ActivityIndicator
+} from 'react-native'
 import {Layout, Name, Button, ContainerRow, ButtonSound, PopUp} from '../uikit'
 import Styles from '../styles/Styles'
 import SplashScreen from 'react-native-splash-screen'
 import Sound from 'react-native-sound'
+
 YellowBox.ignoreWarnings(['Require cycle:']);
 
 class Main extends Component {
 
     state = {
-
         fadeAnim: new Animated.Value(0),
         sound_play: '',
-        visibleModal: false
-
+        visibleModal: false,
+        records: ['_ _:_ _', '_ _:_ _', '_ _:_ _'],
+        gameStarted: false,
+        loaderVisible: false
     }
 
     didFocusSubscription = this.props.navigation.addListener('didFocus', async () => {
 
         this.sound = new Sound(require('../res/sound/sound.mp3'), Sound.MAIN_BUNDLE)
 
-        await AsyncStorage.getItem('sound').then((sound)=>{
+        this.getRecords()
 
-            this.setState({sound_play: sound})
+        await AsyncStorage.getItem('sound').then(async (sound) => {
+
+            await this.setState({sound_play: sound})
             this.playStopSound()
 
         })
@@ -47,78 +59,126 @@ class Main extends Component {
 
     }
 
-    playStopSound = ()=> {
+    playStopSound = () => {
 
-        if(this.state.sound_play==='1' || this.state.sound_play===null){
+        if (this.state.sound_play === '1' || this.state.sound_play === null) {
 
-            if(this.state.sound_play===null){
+            if (this.state.sound_play === null) {
 
                 this.setState({sound_play: '1'})
 
             }
 
-            setTimeout(()=>{
+            AsyncStorage.setItem('sound', '1')
 
-                this.sound.play(()=>{this.playStopSound()})
+            setTimeout(() => {
 
-            },500)
+                this.sound.play(() => {
+                    this.playStopSound()
+                })
 
-        }else {
+            }, 500)
+
+        } else {
 
             this.sound.stop()
+            AsyncStorage.setItem('sound', '0')
 
         }
 
     }
 
-    setModalVisible = (visible)=>{
+    setModalVisible = (visible) => {
 
         this.setState({visibleModal: visible})
+
+    }
+
+    getRecords = async () => {
+
+        await AsyncStorage.getItem('records').then((records) => {
+
+            let res = JSON.parse(records)
+
+            if (res !== null) {
+
+                let records = ['_ _:_ _', '_ _:_ _', '_ _:_ _']
+
+                for (let i = 0; i < res.length; i++) {
+
+                    records[i] = res[i]
+
+                }
+
+                this.setState({records: records})
+
+            }
+
+        })
 
     }
 
     render(): React.ReactNode {
 
         const {container} = Styles
-        const {fadeAnim, sound_play,visibleModal} = this.state
+        const {
+            fadeAnim,
+            sound_play,
+            visibleModal,
+            records,
+            gameStarted,
+            loaderVisible
+        } = this.state
 
         return (
             <View style={container}>
 
                 <StatusBar hidden={true}/>
 
-                <Layout>
+                {!loaderVisible ? <Layout>
 
-                    <ButtonSound animatedValue={new Animated.Value(1)}
-                                 soundOn={sound_play}
-                                 onPress={() => {this.setState({sound_play: this.state.sound_play==='0'?'1':'0'});this.playStopSound()}}
-                                 fadeAnim={fadeAnim}/>
+                        <ButtonSound animatedValue={new Animated.Value(1)}
+                                     soundOn={sound_play}
+                                     onPress={() => {
+                                         this.setState({sound_play: this.state.sound_play === '0' ? '1' : '0'})
+                                         this.playStopSound()
+                                     }}
+                                     fadeAnim={fadeAnim}/>
 
-                    <Name fadeAnim={fadeAnim}/>
+                        <Name fadeAnim={fadeAnim}/>
 
-                    <PopUp visibleModal={visibleModal}
-                           setModalVisible={this.setModalVisible}
-                    />
+                        <PopUp visibleModal={visibleModal}
+                               setModalVisible={this.setModalVisible}
+                               records={records}
+                        />
 
-                    <ContainerRow>
+                        <ContainerRow>
 
-                        <Button animatedValue={new Animated.Value(1)}
-                                iconName={'play'}
-                                onPress={() => {
-                                    alert(1)
-                                }}
-                                fadeAnim={fadeAnim}/>
+                            <Button animatedValue={new Animated.Value(1)}
+                                    iconName={'play'}
+                                    onPress={() => {
+                                        if (!gameStarted) {
+                                            this.setState({loaderVisible: true})
+                                        }
+                                        this.setState({gameStarted: true})
+                                    }}
+                                    fadeAnim={fadeAnim}/>
 
-                        <Button animatedValue={new Animated.Value(1)}
-                                iconName={'crown'}
-                                onPress={() => {
-                                    this.setModalVisible(true)
-                                }}
-                                fadeAnim={fadeAnim}/>
+                            <Button animatedValue={new Animated.Value(1)}
+                                    iconName={'crown'}
+                                    onPress={() => {
+                                        this.setModalVisible(true)
+                                    }}
+                                    fadeAnim={fadeAnim}/>
 
-                    </ContainerRow>
+                        </ContainerRow>
 
-                </Layout>
+                    </Layout> :
+                    <Layout>
+
+                        <ActivityIndicator size={70} color={'rgb(70,23,4)'}/>
+
+                    </Layout>}
 
             </View>
         )

@@ -1,12 +1,21 @@
 import React from 'react'
-import {View, TouchableWithoutFeedback} from 'react-native'
+import {View, TouchableWithoutFeedback, Text} from 'react-native'
 import Styles from '../styles/Styles'
 import Dialog, { SlideAnimation, DialogContent } from 'react-native-popup-dialog'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 
-const PopUp = ({visibleModal,setModalVisible}) => {
+const PopUp = ({visibleModal,setModalVisible,records}) => {
 
-    const {containerDialog,popUpCloseButton,contentCenter} = Styles
+    const {
+        containerDialog,
+        popUpCloseButton,
+        contentCenter,
+        popUpItem,
+        row,
+        popUpItemText,
+        marginRight10,
+        fontSize24
+    } = Styles
 
     return (
 
@@ -30,6 +39,54 @@ const PopUp = ({visibleModal,setModalVisible}) => {
                         </View>
 
                     </TouchableWithoutFeedback>
+
+                    <View style={[popUpItem,row]}>
+
+                        <View style={[contentCenter,{width: '30%'}]}>
+
+                            <Text style={[popUpItemText,marginRight10]}>1.</Text>
+
+                        </View>
+
+                        <View style={[contentCenter,{width: '60%'}]}>
+
+                            <Text style={[popUpItemText,fontSize24]}>{records[0]}</Text>
+
+                        </View>
+
+                    </View>
+
+                    <View style={[popUpItem,row]}>
+
+                        <View style={[contentCenter,{width: '30%'}]}>
+
+                            <Text style={[popUpItemText,marginRight10]}>2.</Text>
+
+                        </View>
+
+                        <View style={[contentCenter,{width: '60%'}]}>
+
+                            <Text style={[popUpItemText,fontSize24]}>{records[1]}</Text>
+
+                        </View>
+
+                    </View>
+
+                    <View style={[popUpItem,row]}>
+
+                        <View style={[contentCenter,{width: '30%'}]}>
+
+                            <Text style={[popUpItemText,marginRight10]}>3.</Text>
+
+                        </View>
+
+                        <View style={[contentCenter,{width: '60%'}]}>
+
+                            <Text style={[popUpItemText,fontSize24]}>{records[2]}</Text>
+
+                        </View>
+
+                    </View>
 
                 </DialogContent>
 

@@ -61,6 +61,23 @@ const Styles = StyleSheet.create({
         borderRadius: 90,
         borderColor: 'rgb(70,23,4)',
         elevation: 8
+    },
+    popUpItem: {
+        height: '33%',
+        width: '100%',
+        marginTop: '3.3%',
+        alignItems: 'center'
+    },
+    popUpItemText: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'rgb(70,23,4)'
+    },
+    marginRight10: {
+        marginRight: 20
+    },
+    fontSize24: {
+        fontSize: 24
     }
 })
 
