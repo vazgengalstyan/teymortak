@@ -6,7 +6,6 @@ const TimerContainer = props => {
 
     const {positionAbsoluteContainer,contentCenter} = Styles
 
-
     return (
 
         <View style={[contentCenter,positionAbsoluteContainer]}>

@@ -5,9 +5,7 @@ import Styles from '../styles/Styles'
 const GameBoard = props => {
 
     const {BoardGame} = Styles
-
-    let fadeAnim = new Animated.Value(0)
-    Animated.timing(fadeAnim, {toValue: 1, duration: 500}).start();
+    const fadeAnim = props.fadeAnim
 
     return (
 
