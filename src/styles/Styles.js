@@ -80,9 +80,8 @@ const Styles = StyleSheet.create({
         fontSize: 24
     },
     BoardGame: {
-        width: w-40,
-        padding: 20,
-        height: w-40,
+        width: w-30,
+        height: w-30,
         backgroundColor: 'rgb(224,183,127)',
         borderWidth: 5,
         borderColor: 'rgb(70,23,4)'
@@ -96,6 +95,17 @@ const Styles = StyleSheet.create({
     timeStyle: {
         color: 'rgb(70,23,4)',
         fontSize: 50,
+        fontWeight: 'bold'
+    },
+    containerCube: {
+        width: (w-56)/4,
+        height: (w-56)/4,
+        margin: 2,
+        backgroundColor: 'rgb(70,23,4)'
+    },
+    textCube: {
+        color: 'rgb(224,183,127)',
+        fontSize: 30,
         fontWeight: 'bold'
     }
 })
