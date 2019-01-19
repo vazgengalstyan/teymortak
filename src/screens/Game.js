@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import {CubeList, GameBoard, Layout, Time, TimerContainer} from '../uikit'
 import Styles from '../styles/Styles'
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
 
 YellowBox.ignoreWarnings(['Require cycle:']);
 
@@ -269,6 +270,90 @@ class Game extends Component {
         )
 
     }
+    swipe = async (val)=>{
+
+        let matrix = [[],[],[],[]];
+        let oldData = this.state.data;
+        let emptyIndex;
+        let emptyCoordinate = [];
+        let cordinate;
+
+        for(let i = 0; i < matrix.length; i++){
+
+            let k =  i*4+4;
+            for(let j = i*4; j < k; j++){
+
+                matrix[i].push(oldData[j])
+
+            }
+
+        }
+
+        for(let i = 0; i < oldData.length; i++){
+
+            if(oldData[i].number===''){
+
+                emptyIndex = i;
+
+            }
+
+        }
+
+        emptyCoordinate = [Math.trunc(emptyIndex/4),emptyIndex-4*Math.trunc(emptyIndex/4)];
+
+        if(val === 'Up'){
+
+            cordinate = [emptyCoordinate[0]+1,emptyCoordinate[1]]
+
+            if(matrix[cordinate[0]]){
+
+                let item = matrix[cordinate[0]][cordinate[1]]
+                let index = cordinate[0]*4+cordinate[1]
+                await this.clickItem(item,index)
+            }
+
+        }
+
+        if(val === 'Down'){
+
+            cordinate = [emptyCoordinate[0]-1,emptyCoordinate[1]]
+
+            if(matrix[cordinate[0]]){
+
+                let item = matrix[cordinate[0]][cordinate[1]]
+                let index = cordinate[0]*4+cordinate[1]
+                await this.clickItem(item,index)
+            }
+
+        }
+
+        if(val === 'Left'){
+
+            cordinate = [emptyCoordinate[0],emptyCoordinate[1]+1]
+
+            if(matrix[cordinate[1]]){
+
+                let item = matrix[cordinate[0]][cordinate[1]]
+                let index = cordinate[0]*4+cordinate[1]
+                await this.clickItem(item,index)
+            }
+
+        }
+
+        if(val === 'Right'){
+
+            cordinate = [emptyCoordinate[0],emptyCoordinate[1]-1]
+
+            if(matrix[cordinate[1]]){
+
+                let item = matrix[cordinate[0]][cordinate[1]]
+                let index = cordinate[0]*4+cordinate[1]
+                await this.clickItem(item,index)
+            }
+
+        }
+
+    }
 
     render(): React.ReactNode {
 
@@ -284,8 +369,20 @@ class Game extends Component {
             data
         } = this.state
 
+        const config = {
+            velocityThreshold: 0.1,
+            directionalOffsetThreshold: 100
+        };
+
         return (
-            <View style={container}>
+            <GestureRecognizer
+                style={container}
+                config={config}
+                onSwipeUp={() => this.swipe('Up')}
+                onSwipeDown={() => this.swipe('Down')}
+                onSwipeLeft={() => this.swipe('Left')}
+                onSwipeRight={() => this.swipe('Right')}
+            >
 
                 <StatusBar hidden={true}/>
 
@@ -311,7 +408,7 @@ class Game extends Component {
 
                     </Layout>}
 
-            </View>
+            </GestureRecognizer>
         )
 
     }
