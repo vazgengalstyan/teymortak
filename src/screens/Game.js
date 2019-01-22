@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import {CubeList, GameBoard, Layout, Time, TimerContainer} from '../uikit'
 import Styles from '../styles/Styles'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures'
+import GestureRecognizer from 'react-native-swipe-gestures'
 
 YellowBox.ignoreWarnings(['Require cycle:']);
 
@@ -270,6 +270,7 @@ class Game extends Component {
         )
 
     }
+
     swipe = async (val)=>{
 
         let matrix = [[],[],[],[]];
@@ -371,7 +372,7 @@ class Game extends Component {
 
         const config = {
             velocityThreshold: 0.1,
-            directionalOffsetThreshold: 100
+            directionalOffsetThreshold: 50
         };
 
         return (
